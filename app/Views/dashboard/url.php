@@ -37,9 +37,13 @@
         }
 
         .dynamic-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             padding: 10px;
             background-color: #f0f0f0;
             border-radius: 5px;
+            margin-bottom: 10px;
         }
 
         .dynamic-link a {
@@ -50,6 +54,15 @@
 
         .dynamic-link a:hover {
             color: #4CAF50;
+        }
+
+        .edit-delete-buttons {
+            display: flex;
+            align-items: center;
+        }
+
+        .edit-delete-buttons button {
+            margin-left: 10px;
         }
 
         .create-link-button {
@@ -119,6 +132,10 @@
             <?php if ($dynamicLink): ?>
                 <div class="dynamic-link">
                     <a href="<?= base_url('world/link/' . $dynamicLink['dynamic_link']) ?>">http://localhost/world/link/<?= $dynamicLink['dynamic_link'] ?></a>
+                    <div class="edit-delete-buttons">
+                        <button onclick="editDynamicLink('<?= $dynamicLink['dynamic_link'] ?>')">Edit</button>
+                        <button onclick="deleteDynamicLink('<?= $dynamicLink['dynamic_link'] ?>')">Delete</button>
+                    </div>
                 </div>
             <?php else: ?>
                 <div>No dynamic link found. <button class="create-link-button" onclick="openCreateLinkModal()">Create one</button></div>
@@ -147,6 +164,16 @@
 
         function closeCreateLinkModal() {
             document.getElementById('createLinkModal').style.display = 'none';
+        }
+
+        function editDynamicLink(dynamicLink) {
+            // You can implement the logic for editing here
+            alert('Edit dynamic link: ' + dynamicLink);
+        }
+
+        function deleteDynamicLink(dynamicLink) {
+            // You can implement the logic for deleting here
+            alert('Delete dynamic link: ' + dynamicLink);
         }
     </script>
 </body>
