@@ -116,6 +116,32 @@
             cursor: pointer;
         }
 
+        .flash-messages {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 300px;
+        }
+
+        .flash-message {
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .flash-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .flash-message.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+
         @media (max-width: 600px) {
             .container {
                 padding: 10px;
@@ -124,6 +150,21 @@
     </style>
 </head>
 <body>
+<div class="flash-messages">
+        <?php if (session()->has('errors')): ?>
+            <?php foreach (session('errors') as $error): ?>
+                <div class="flash-message error"><?= $error ?></div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
+        <?php if (session()->has('error')): ?>
+            <div class="flash-message error"><?= session('error') ?></div>
+        <?php endif; ?>
+
+        <?php if (session()->has('success')): ?>
+            <div class="flash-message success"><?= session('success') ?></div>
+        <?php endif; ?>
+    </div>
     <div class="container">
         <h1>User URL</h1>
 
@@ -133,8 +174,8 @@
                 <div class="dynamic-link">
                     <a href="<?= base_url('world/link/' . $dynamicLink['dynamic_link']) ?>">http://localhost/world/link/<?= $dynamicLink['dynamic_link'] ?></a>
                     <div class="edit-delete-buttons">
-                        <button onclick="editDynamicLink('<?= $dynamicLink['dynamic_link'] ?>')">Edit</button>
-                        <button onclick="deleteDynamicLink('<?= $dynamicLink['dynamic_link'] ?>')">Delete</button>
+                    <button onclick="editDynamicLink('<?= $dynamicLink['dynamic_link'] ?>')">Edit</button>
+                    <button onclick="deleteDynamicLink('<?= $dynamicLink['dynamic_link'] ?>')">Delete</button>
                     </div>
                 </div>
             <?php else: ?>
@@ -166,15 +207,20 @@
             document.getElementById('createLinkModal').style.display = 'none';
         }
 
-        function editDynamicLink(dynamicLink) {
-            // You can implement the logic for editing here
-            alert('Edit dynamic link: ' + dynamicLink);
-        }
+    </script>
 
-        function deleteDynamicLink(dynamicLink) {
-            // You can implement the logic for deleting here
-            alert('Delete dynamic link: ' + dynamicLink);
-        }
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(function() {
+                const flashMessages = document.querySelectorAll('.flash-message');
+                flashMessages.forEach(function(message) {
+                    message.style.opacity = '0';
+                    setTimeout(function() {
+                        message.style.display = 'none';
+                    }, 500);
+                });
+            }, 3000);
+        });
     </script>
 </body>
 </html>
