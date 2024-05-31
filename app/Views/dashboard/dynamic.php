@@ -26,15 +26,19 @@
             display: inline-block;
             padding: 10px 20px;
             margin: 5px;
-            background-color: #4CAF50;
-            color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
 
-        .toggle-button.active {
-            background-color: #45a049;
+        .toggle-button.status-green {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+
+        .toggle-button.status-red {
+            background-color: #F44336;
+            color: #fff;
         }
 
         .flash-messages {
@@ -66,15 +70,24 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const toggleButtons = document.querySelectorAll('.toggle-button');
+            const statuses = <?= json_encode($statuses) ?>;
+            console.log(statuses);
 
             toggleButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const isOn = button.classList.toggle('active');
-                    const statusIndex = button.id.replace('toggle', '');
-                    updateDashboardStatus(statusIndex, isOn ? 1 : 0);
-                });
-            });
+        const statusIndex = button.id.replace('toggle', '');
+        const isGreen = parseInt(statuses['status' + statusIndex]); // Parse as integer
+        console.log('Button:', button.id, 'Status:', isGreen);
+        button.classList.toggle('status-green', isGreen);
+        button.classList.toggle('status-red', !isGreen);
 
+        button.addEventListener('click', function() {
+            const isOn = button.classList.toggle('active');
+            updateDashboardStatus(statusIndex, isOn ? 1 : 0);
+            });
+        });
+
+
+            // Function to update status based on button click
             function updateDashboardStatus(statusIndex, value) {
                 $.ajax({
                     url: '<?= site_url('dashboard/updateStatus') ?>',
