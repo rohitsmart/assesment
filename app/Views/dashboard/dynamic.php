@@ -69,25 +69,43 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const ws = new WebSocket('ws://localhost:8090');
+
+            ws.onmessage = function(event) {
+                const statuses = JSON.parse(event.data);
+                updateButtonColors(statuses);
+            };
+
             const toggleButtons = document.querySelectorAll('.toggle-button');
             const statuses = <?= json_encode($statuses) ?>;
             console.log(statuses);
 
             toggleButtons.forEach(button => {
-        const statusIndex = button.id.replace('toggle', '');
-        const isGreen = parseInt(statuses['status' + statusIndex]); // Parse as integer
-        console.log('Button:', button.id, 'Status:', isGreen);
-        button.classList.toggle('status-green', isGreen);
-        button.classList.toggle('status-red', !isGreen);
+                const statusIndex = button.id.replace('toggle', '');
+                const isGreen = parseInt(statuses['status' + statusIndex]);
+                console.log('Button:', button.id, 'Status:', isGreen);
+                button.classList.toggle('status-green', isGreen);
+                button.classList.toggle('status-red', !isGreen);
 
-        button.addEventListener('click', function() {
-            const isOn = button.classList.toggle('active');
-            updateDashboardStatus(statusIndex, isOn ? 1 : 0);
+                button.addEventListener('click', function() {
+                    const isOn = button.classList.toggle('active');
+                    updateDashboardStatus(statusIndex, isOn ? 1 : 0);
+                });
             });
-        });
 
+            function updateButtonColors(statuses) {
+                for (let i = 1; i <= 5; i++) {
+                    const status = statuses['status' + i];
+                    const button = document.getElementById('toggle' + i);
+                    button.classList.remove('status-green', 'status-red');
+                    if (status) {
+                        button.classList.add('status-green');
+                    } else {
+                        button.classList.add('status-red');
+                    }
+                }
+            }
 
-            // Function to update status based on button click
             function updateDashboardStatus(statusIndex, value) {
                 $.ajax({
                     url: '<?= site_url('dashboard/updateStatus') ?>',
@@ -98,7 +116,7 @@
                     },
                     success: function(response) {
                         if (response.success) {
-                            console.log(response.message);
+                            console.log('Toggle response:', response.message);
                         } else {
                             console.error('Error:', response.message);
                         }

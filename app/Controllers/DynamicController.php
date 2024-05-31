@@ -10,7 +10,6 @@ class DynamicController extends BaseController
     public function showDynamic($dynamicLink)
     {
         $userId = session()->get('user_id');
-
         $dynamicLinkModel = new DynamicLinkModel();
         $dynamicLinkData = $dynamicLinkModel->where('user_id', $userId)
                                             ->where('dynamic_link', $dynamicLink)

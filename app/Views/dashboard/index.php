@@ -79,10 +79,29 @@
             }
         }
     </style>
-    <!-- jQuery CDN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const ws = new WebSocket('ws://localhost:8090');
+
+            ws.onmessage = function(event) {
+                const statuses = JSON.parse(event.data);
+                updateButtonColors(statuses);
+            };
+
+            function updateButtonColors(statuses) {
+                for (let i = 1; i <= 5; i++) {
+                    const status = statuses['status' + i];
+                    const button = document.getElementById('toggle' + i);
+                    button.classList.remove('status-green', 'status-red');
+                    if (status) {
+                        button.classList.add('status-green');
+                    } else {
+                        button.classList.add('status-red');
+                    }
+                }
+            }
+
             setTimeout(function() {
                 const flashMessages = document.querySelectorAll('.flash-message');
                 flashMessages.forEach(function(message) {
@@ -105,11 +124,12 @@
     </div>
     <div class="container">
         <h1>User Dashboard</h1>
-        <div class="status <?= $status1 ? 'status-green' : 'status-red' ?>">Status 1</div>
-        <div class="status <?= $status2 ? 'status-green' : 'status-red' ?>">Status 2</div>
-        <div class="status <?= $status3 ? 'status-green' : 'status-red' ?>">Status 3</div>
-        <div class="status <?= $status4 ? 'status-green' : 'status-red' ?>">Status 4</div>
-        <div class="status <?= $status5 ? 'status-green' : 'status-red' ?>">Status 5</div>
+        <?php ?>
+        <div class="status <?= $statuses['status1'] ? 'status-green' : 'status-red' ?>" id="toggle1">Status 1</div>
+        <div class="status <?= $statuses['status2'] ? 'status-green' : 'status-red' ?>" id="toggle2">Status 2</div>
+        <div class="status <?= $statuses['status3'] ? 'status-green' : 'status-red' ?>" id="toggle3">Status 3</div>
+        <div class="status <?= $statuses['status4'] ? 'status-green' : 'status-red' ?>" id="toggle4">Status 4</div>
+        <div class="status <?= $statuses['status5'] ? 'status-green' : 'status-red' ?>" id="toggle5">Status 5</div>
         <a href="<?= site_url(route_to('user-url-screen')) ?>">Go to User URL Page</a>
     </div>
 </body>
