@@ -30,7 +30,4 @@ class DynamicController extends BaseController
             return redirect()->to(route_to('user-url-screen'));
         }
     }
-
-
-    
 }

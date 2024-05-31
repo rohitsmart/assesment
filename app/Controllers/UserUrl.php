@@ -32,45 +32,34 @@ class UserUrl extends BaseController
         return redirect()->to(route_to('user-url-screen'));
     }
 
-    public function editDynamicUrl($dynamicLink)
+    public function editDynamicUrl()
     {
         $request = service('request');
         $dynamicLinkModel = new DynamicLinkModel();
         $userId = session()->get('user_id');
+        $existingLink = $dynamicLinkModel->where('user_id', $userId)->first();
+        if (!$existingLink) {
+            session()->setFlashdata('error', 'Dynamic link not found.');
+            return redirect()->to(route_to('user-url-screen'));
+        }
+        $newDynamicLink = $request->getPost('new_dynamic_link');
+        $dynamicLinkModel->update($existingLink['id'], ['dynamic_link' => $newDynamicLink]);
+        session()->setFlashdata('success', 'Dynamic link updated successfully.');
+        return redirect()->to(route_to('user-url-screen'));
+    }
 
-        $existingLink = $dynamicLinkModel->where('user_id', $userId)
-                                        ->where('dynamic_link', $dynamicLink)
-                                        ->first();
+    public function deleteDynamicUrl()
+    {
+        $dynamicLinkModel = new DynamicLinkModel();
+        $userId = session()->get('user_id');
+        $existingLink = $dynamicLinkModel->where('user_id', $userId)->first();
 
         if (!$existingLink) {
             session()->setFlashdata('error', 'Dynamic link not found.');
             return redirect()->to(route_to('user-url-screen'));
         }
-
-        $existingLink->dynamic_link = $request->getPost('new_dynamic_link');
-        $dynamicLinkModel->save($existingLink);
-
-        session()->setFlashdata('success', 'Dynamic link updated successfully.');
-
+        $dynamicLinkModel->delete($existingLink['id']);
+        session()->setFlashdata('success', 'Dynamic link deleted successfully.');
         return redirect()->to(route_to('user-url-screen'));
     }
-
-    public function deleteDynamicUrl($dynamicLink)
-    {
-        $dynamicLinkModel = new DynamicLinkModel();
-        $userId = session()->get('user_id');
-
-        $deleted = $dynamicLinkModel->where('user_id', $userId)
-                                    ->where('dynamic_link', $dynamicLink)
-                                    ->delete();
-        if ($deleted) {
-            session()->setFlashdata('success', 'Dynamic link deleted successfully.');
-        } else {
-            session()->setFlashdata('error', 'Unable to delete dynamic link.');
-        }
-
-        return redirect()->to(route_to('user-url-screen'));
-    }
-
-
 }

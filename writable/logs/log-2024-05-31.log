@@ -1,0 +1,34 @@
+CRITICAL - 2024-05-31 13:25:51 --> InvalidArgumentException: Missing argument for "(:segment)" in route "delete-dynamic-url/(:segment)".
+[Method: GET, Route: user-url]
+in SYSTEMPATH/Router/RouteCollection.php on line 1383.
+ 1 SYSTEMPATH/Router/RouteCollection.php(1204): CodeIgniter\Router\RouteCollection->buildReverseRoute()
+ 2 SYSTEMPATH/Common.php(953): CodeIgniter\Router\RouteCollection->reverseRoute()
+ 3 APPPATH/Views/dashboard/url.php(218): route_to()
+ 4 SYSTEMPATH/View/View.php(234): include('/home/oem/pk_development/Rohit_Learning/world/app/Views/dashboard/url.php')
+ 5 SYSTEMPATH/View/View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 6 SYSTEMPATH/Common.php(1171): CodeIgniter\View\View->render()
+ 7 APPPATH/Controllers/UserUrl.php(16): view()
+ 8 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\UserUrl->index()
+ 9 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController()
+10 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest()
+11 SYSTEMPATH/Boot.php(312): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter()
+13 FCPATH/index.php(56): CodeIgniter\Boot::bootWeb()
+14 SYSTEMPATH/Commands/Server/rewrite.php(49): require_once('/home/oem/pk_development/Rohit_Learning/world/public/index.php')
+CRITICAL - 2024-05-31 13:25:53 --> InvalidArgumentException: Missing argument for "(:segment)" in route "delete-dynamic-url/(:segment)".
+[Method: GET, Route: user-url]
+in SYSTEMPATH/Router/RouteCollection.php on line 1383.
+ 1 SYSTEMPATH/Router/RouteCollection.php(1204): CodeIgniter\Router\RouteCollection->buildReverseRoute()
+ 2 SYSTEMPATH/Common.php(953): CodeIgniter\Router\RouteCollection->reverseRoute()
+ 3 APPPATH/Views/dashboard/url.php(218): route_to()
+ 4 SYSTEMPATH/View/View.php(234): include('/home/oem/pk_development/Rohit_Learning/world/app/Views/dashboard/url.php')
+ 5 SYSTEMPATH/View/View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 6 SYSTEMPATH/Common.php(1171): CodeIgniter\View\View->render()
+ 7 APPPATH/Controllers/UserUrl.php(16): view()
+ 8 SYSTEMPATH/CodeIgniter.php(933): App\Controllers\UserUrl->index()
+ 9 SYSTEMPATH/CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController()
+10 SYSTEMPATH/CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest()
+11 SYSTEMPATH/Boot.php(312): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH/Boot.php(67): CodeIgniter\Boot::runCodeIgniter()
+13 FCPATH/index.php(56): CodeIgniter\Boot::bootWeb()
+14 SYSTEMPATH/Commands/Server/rewrite.php(49): require_once('/home/oem/pk_development/Rohit_Learning/world/public/index.php')

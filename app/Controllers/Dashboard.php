@@ -44,10 +44,8 @@ class Dashboard extends BaseController
         $statusIndex = $this->request->getPost('statusIndex');
         $value = $this->request->getPost('value');
 
-        // Debug logging for received data
         log_message('debug', 'Received request: statusIndex=' . print_r($statusIndex, true) . ', value=' . print_r($value, true) . ', userId=' . $userId);
 
-        // Validate that statusIndex and value are not arrays
         if (is_array($statusIndex) || is_array($value)) {
             log_message('error', 'Invalid data: statusIndex or value is an array.');
             return $this->response->setJSON([
@@ -56,7 +54,6 @@ class Dashboard extends BaseController
             ]);
         }
 
-        // Ensure statusIndex is a valid status field
         if (!in_array($statusIndex, [1, 2, 3, 4, 5])) {
             log_message('error', 'Invalid status index: ' . $statusIndex);
             return $this->response->setJSON([
@@ -65,7 +62,6 @@ class Dashboard extends BaseController
             ]);
         }
 
-        // Prepare the data for updating
         $updateData = ['status_' . $statusIndex => $value];
 
         try {

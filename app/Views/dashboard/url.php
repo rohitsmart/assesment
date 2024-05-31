@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User URL</title>
-    <!-- Add CSS styles here -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -174,9 +173,11 @@
                 <div class="dynamic-link">
                     <a href="<?= base_url('world/link/' . $dynamicLink['dynamic_link']) ?>">http://localhost/world/link/<?= $dynamicLink['dynamic_link'] ?></a>
                     <div class="edit-delete-buttons">
-                    <button onclick="editDynamicLink('<?= $dynamicLink['dynamic_link'] ?>')">Edit</button>
-                    <button onclick="deleteDynamicLink('<?= $dynamicLink['dynamic_link'] ?>')">Delete</button>
+                        <button onclick="openEditLinkModal('<?= $dynamicLink['dynamic_link'] ?>')">Edit</button>
+                        <button onclick="openDeleteLinkModal()">Delete</button>
+
                     </div>
+
                 </div>
             <?php else: ?>
                 <div>No dynamic link found. <button class="create-link-button" onclick="openCreateLinkModal()">Create one</button></div>
@@ -184,7 +185,6 @@
         </div>
     </div>
 
-    <!-- Create Link Modal -->
     <div id="createLinkModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeCreateLinkModal()">&times;</span>
@@ -197,7 +197,33 @@
         </div>
     </div>
 
-    <!-- JavaScript for modal -->
+    <div id="editLinkModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditLinkModal()">&times;</span>
+            <h2>Edit Dynamic Link</h2>
+            <form action="<?= route_to('edit-dynamic-url') ?>" method="post">
+                <input type="text" id="new_dynamic_link" name="new_dynamic_link"  placeholder="Enter new  link" required>
+                <br><br>
+                <button type="submit" class="create-link-button">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div id="deleteLinkModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeDeleteLinkModal()">&times;</span>
+            <h2>Delete Dynamic Link</h2>
+            <p>Are you sure you want to delete this link?</p>
+            <form id="deleteLinkForm" action="<?= route_to('delete-dynamic-url') ?>" method="post">
+                <input type="hidden" id="delete_dynamic_link" name="delete_dynamic_link">
+                <button type="submit" class="delete-link-button">Delete</button>
+                <button type="button" onclick="closeDeleteLinkModal()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+
     <script>
         function openCreateLinkModal() {
             document.getElementById('createLinkModal').style.display = 'block';
@@ -207,9 +233,27 @@
             document.getElementById('createLinkModal').style.display = 'none';
         }
 
+        function openEditLinkModal(dynamicLink) {
+            document.getElementById('editLinkModal').style.display = 'block';
+        }
+
+        function closeEditLinkModal() {
+            document.getElementById('editLinkModal').style.display = 'none';
+        }
+
+        function openDeleteLinkModal() {
+            document.getElementById('deleteLinkModal').style.display = 'block';
+        }
+
+        function closeDeleteLinkModal() {
+            document.getElementById('deleteLinkModal').style.display = 'none';
+        }
+
+
+
     </script>
 
-<script>
+    <script>
         document.addEventListener("DOMContentLoaded", function() {
             setTimeout(function() {
                 const flashMessages = document.querySelectorAll('.flash-message');

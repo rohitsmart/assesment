@@ -22,10 +22,8 @@ class User extends Model
         return $data;
     }
 
-
     public function verifyPassword(string $rawPassword, string $hashedPassword): bool
     {
-        echo'3';
 
         return password_verify($rawPassword, $hashedPassword);
     }
