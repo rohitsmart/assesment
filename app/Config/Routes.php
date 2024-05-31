@@ -13,6 +13,8 @@ $routes->post('register', 'Auth::processRegister', ['as' => 'processRegister']);
 
 
 $routes->get('dashboard', 'Dashboard::index',['as' => 'dashboard']);
+$routes->post('dashboard/updateStatus', 'Dashboard::updateStatus', ['as' => 'updateStatus']);
+
 $routes->get('user-url', 'UserUrl::index',['as'=>'user-url-screen']);
 $routes->post('create-dynamic-url', 'UserUrl::createDynamicUrl', ['as' => 'create-dynamic-url']);
 

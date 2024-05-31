@@ -1,4 +1,3 @@
-<!-- dynamic.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,9 +62,55 @@
             color: #155724;
         }
     </style>
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleButtons = document.querySelectorAll('.toggle-button');
+
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const isOn = button.classList.toggle('active');
+                    const statusIndex = button.id.replace('toggle', '');
+                    updateDashboardStatus(statusIndex, isOn ? 1 : 0);
+                });
+            });
+
+            function updateDashboardStatus(statusIndex, value) {
+                $.ajax({
+                    url: '<?= site_url('dashboard/updateStatus') ?>',
+                    type: 'POST',
+                    data: {
+                        statusIndex: statusIndex,
+                        value: value
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            console.log(response.message);
+                        } else {
+                            console.error('Error:', response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', error);
+                    }
+                });
+            }
+
+            setTimeout(function() {
+                const flashMessages = document.querySelectorAll('.flash-message');
+                flashMessages.forEach(function(message) {
+                    message.style.opacity = '0';
+                    setTimeout(function() {
+                        message.style.display = 'none';
+                    }, 500);
+                });
+            }, 3000);
+        });
+    </script>
 </head>
 <body>
-<div class="flash-messages">
+    <div class="flash-messages">
         <?php if (session()->has('errors')): ?>
             <?php foreach (session('errors') as $error): ?>
                 <div class="flash-message error"><?= $error ?></div>
@@ -88,57 +133,5 @@
         <button id="toggle4" class="toggle-button">Toggle 4</button>
         <button id="toggle5" class="toggle-button">Toggle 5</button>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const toggleButtons = document.querySelectorAll('.toggle-button');
-
-            toggleButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const isOn = button.classList.toggle('active');
-                    const statusIndex = button.id.replace('toggle', '') - 1; // Extract the status index from button id
-                    updateDashboardStatus(statusIndex, isOn ? 1 : 0); // Update dashboard status
-                });
-            });
-
-            // Function to update dashboard status
-            function updateDashboardStatus(statusIndex, value) {
-                // Send an AJAX request to update the status in the backend
-                // You can use fetch or XMLHttpRequest to send the request
-                // Example:
-                // fetch('update-status', {
-                //     method: 'POST',
-                //     body: JSON.stringify({ statusIndex, value }),
-                //     headers: {
-                //         'Content-Type': 'application/json'
-                //     }
-                // })
-                // .then(response => response.json())
-                // .then(data => {
-                //     console.log(data);
-                // })
-                // .catch(error => {
-                //     console.error('Error:', error);
-                // });
-
-                // For demonstration, we'll just log the status update
-                console.log(`Status ${statusIndex + 1} updated to ${value}`);
-            }
-        });
-    </script>
-
-<script>
-        document.addEventListener("DOMContentLoaded", function() {
-            setTimeout(function() {
-                const flashMessages = document.querySelectorAll('.flash-message');
-                flashMessages.forEach(function(message) {
-                    message.style.opacity = '0';
-                    setTimeout(function() {
-                        message.style.display = 'none';
-                    }, 500);
-                });
-            }, 3000);
-        });
-    </script>
 </body>
 </html>

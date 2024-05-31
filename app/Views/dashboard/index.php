@@ -80,6 +80,8 @@
             }
         }
     </style>
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const statuses = document.querySelectorAll('.status');
@@ -89,8 +91,45 @@
                     const isGreen = this.classList.contains('status-green');
                     this.classList.toggle('status-green', !isGreen);
                     this.classList.toggle('status-red', isGreen);
+
+                    const statusIndex = Array.from(statuses).indexOf(this) + 1;
+                    const value = !isGreen ? 1 : 0;
+                    updateStatus(statusIndex, value);
                 });
             });
+
+            function updateStatus(statusIndex, value) {
+                $.ajax({
+                    url: '<?= site_url('dashboard/updateStatus') ?>',
+                    type: 'POST',
+                    data: {
+                        statusIndex: statusIndex,
+                        value: value
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            console.log(response.message);
+                        } else {
+                            console.error('Error:', response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', error);
+                    }
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const flashMessages = document.querySelectorAll('.flash-message');
+                flashMessages.forEach(function(message) {
+                    message.style.opacity = '0';
+                    setTimeout(function() {
+                        message.style.display = 'none';
+                    }, 500);
+                });
+            }, 3000);
         });
     </script>
 </head>
@@ -104,37 +143,12 @@
     </div>
     <div class="container">
         <h1>User Dashboard</h1>
-        <div class="status <?= $status1 ? 'status-green' : 'status-red' ?>">
-            Status 1
-        </div>
-        <div class="status <?= $status2 ? 'status-green' : 'status-red' ?>">
-            Status 2
-        </div>
-        <div class="status <?= $status3 ? 'status-green' : 'status-red' ?>">
-            Status 3
-        </div>
-        <div class="status <?= $status4 ? 'status-green' : 'status-red' ?>">
-            Status 4
-        </div>
-        <div class="status <?= $status5 ? 'status-green' : 'status-red' ?>">
-            Status 5
-        </div>
+        <div class="status <?= $status1 ? 'status-green' : 'status-red' ?>">Status 1</div>
+        <div class="status <?= $status2 ? 'status-green' : 'status-red' ?>">Status 2</div>
+        <div class="status <?= $status3 ? 'status-green' : 'status-red' ?>">Status 3</div>
+        <div class="status <?= $status4 ? 'status-green' : 'status-red' ?>">Status 4</div>
+        <div class="status <?= $status5 ? 'status-green' : 'status-red' ?>">Status 5</div>
         <a href="<?= site_url(route_to('user-url-screen')) ?>">Go to User URL Page</a>
-
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(function() {
-                const flashMessages = document.querySelectorAll('.flash-message');
-                flashMessages.forEach(function(message) {
-                    message.style.opacity = '0';
-                    setTimeout(function() {
-                        message.style.display = 'none';
-                    }, 500);
-                });
-            }, 3000);
-        });
-    </script>
 </body>
 </html>
