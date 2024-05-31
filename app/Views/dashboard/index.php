@@ -37,7 +37,6 @@
             margin: 10px;
             color: #fff;
             font-weight: bold;
-            cursor: pointer;
         }
 
         .status-green {
@@ -83,43 +82,6 @@
     <!-- jQuery CDN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const statuses = document.querySelectorAll('.status');
-
-            statuses.forEach(status => {
-                status.addEventListener('click', function() {
-                    const isGreen = this.classList.contains('status-green');
-                    this.classList.toggle('status-green', !isGreen);
-                    this.classList.toggle('status-red', isGreen);
-
-                    const statusIndex = Array.from(statuses).indexOf(this) + 1;
-                    const value = !isGreen ? 1 : 0;
-                    updateStatus(statusIndex, value);
-                });
-            });
-
-            function updateStatus(statusIndex, value) {
-                $.ajax({
-                    url: '<?= site_url('dashboard/updateStatus') ?>',
-                    type: 'POST',
-                    data: {
-                        statusIndex: statusIndex,
-                        value: value
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            console.log(response.message);
-                        } else {
-                            console.error('Error:', response.message);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('AJAX Error:', error);
-                    }
-                });
-            }
-        });
-
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(function() {
                 const flashMessages = document.querySelectorAll('.flash-message');
